@@ -4,6 +4,10 @@
 
 This challenge is to test your skills and ability in being able to build elements based off of a design mockup.
 
+##Submission Instructions
+
+Email a link to a github repo with the code to devs@stacksocial.com
+
 ## Requirements
 
 ### Part 1: Custom Form Fields
