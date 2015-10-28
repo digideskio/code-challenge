@@ -19,3 +19,10 @@ Application state logic is handled in the reducer and action files. The React co
 3. open ./server.js and fill out Twitter API auth information
 4. npm start - npm will build the bundle and run node
 5. visit http://localhost:8888
+
+### Heroku Deploy
+
+1. Install heroku toolbelt
+2. heroku create
+3. git push heroku master
+4. heroku open
