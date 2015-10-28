@@ -26,6 +26,6 @@ app.post('/tweets', function(request, response) {
 
 app.use(express.static(__dirname+'/public'));
 
-var server=app.listen(8888, function() {
+var server=app.listen(process.env.PORT || 8888, function() {
     console.log("We have started our server at http://localhost:8888");
 });
