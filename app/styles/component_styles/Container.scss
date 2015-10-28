@@ -1,0 +1,67 @@
+@import "../config/config.scss";
+.listStyle {
+  list-style: none;
+}
+.container {
+  padding-top: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  -webkit-animation: fadein 2.5s ease-in;
+}
+.userName {
+  padding-right: 0;
+  padding-top: 25px;
+  padding-bottom: 10px;
+  align-self: center;
+  list-style-type: none;
+  font-family: $font-montserrat;
+  font-size: 15px;
+  color: $brand-primary;
+}
+.messageList {
+  padding-right: 0;
+  padding-top: 25px;
+  align-self: center;
+  list-style-type: none;
+  font-family: $font-montserrat;
+  font-size: 15px;
+  color: $brand-primary;
+}
+.message {
+  padding-bottom: 0.5em;
+  -webkit-animation: fadein 0.2s ease-in;
+}
+.chatButton {
+  width: 25vw;
+  height: 44px;
+  border: 0;
+  background: $brand-tertiary;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: $brand-text;
+  -webkit-animation: fadein 2s ease-in;
+}
+.inputBox {
+  -ms-flex-preferred-size: 26px;
+  display: block;
+  background: none;
+  width: 20em;
+  margin: 0 0 16px;
+  padding: 2px;
+  border-width: 0 0 1px 0;
+  line-height: 26px;
+  border-radius: 0;
+  font-size: 16px;
+  color: $brand-primary;
+  -webkit-animation: fadein 1s ease-in;
+}
+.inputBox:focus {
+  outline: none;
+  border-bottom: 1px solid $brand-highlight;
+  -webkit-transform: scaleX(1);
+  -ms-transform: scaleX(1);
+  transform: scaleX(1);
+}
