@@ -4,8 +4,10 @@ import State from './Tweet';
 import { connect } from 'react-redux';
 import { fetchTweets } from '../actions/actions';
 import ReactDOM from 'react-dom';
+import { Button } from 'react-bootstrap';
 
 // Styling
+import 'bootstrap/dist/css/bootstrap.css';
 import '../styles/component_styles/Container';
 
 export default class Container extends Component {
@@ -35,9 +37,11 @@ export default class Container extends Component {
                 if(e.keyCode === 13) this.handleClick(e);
               }}
             />
-        <button
-          className='chatButton'
-          onClick={(e) => this.handleClick(e)}>Click for the latest 25 tweets!</button>
+          <Button
+            bsStyle='primary'
+            onClick={(e) => this.handleClick(e)}>
+            Click for the latest 25 tweets!
+          </Button>
           <div className='messageList'>
             {React.cloneElement(this.props.children, {
               listOfTweets,

@@ -8,41 +8,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  -webkit-animation: fadein 2.5s ease-in;
-}
-.userName {
-  padding-right: 0;
-  padding-top: 25px;
-  padding-bottom: 10px;
-  align-self: center;
-  list-style-type: none;
-  font-family: $font-montserrat;
-  font-size: 15px;
-  color: $brand-primary;
-}
-.messageList {
-  padding-right: 0;
-  padding-top: 25px;
-  align-self: center;
-  list-style-type: none;
-  font-family: $font-montserrat;
-  font-size: 15px;
-  color: $brand-primary;
-}
-.message {
-  padding-bottom: 0.5em;
-  -webkit-animation: fadein 0.2s ease-in;
-}
-.chatButton {
-  width: 25vw;
-  height: 44px;
-  border: 0;
-  background: $brand-tertiary;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: $brand-text;
-  -webkit-animation: fadein 2s ease-in;
 }
 .inputBox {
   -ms-flex-preferred-size: 26px;
@@ -56,7 +21,6 @@
   border-radius: 0;
   font-size: 16px;
   color: $brand-primary;
-  -webkit-animation: fadein 1s ease-in;
 }
 .inputBox:focus {
   outline: none;
@@ -64,4 +28,26 @@
   -webkit-transform: scaleX(1);
   -ms-transform: scaleX(1);
   transform: scaleX(1);
+}
+.doesNotExist {
+  padding-top: 2em;
+}
+.tweetAnimation-appear {
+  opacity: 0.01;
+  -webkit-transition-delay:0.2s;
+  transition-delay:0.2s;
+}
+.tweetAnimation-appear.tweetAnimation-appear-active {
+  opacity: 1;
+  transition: opacity .5s ease-in;
+}
+.tweetAnimation-enter {
+  opacity: 0.01;
+  -webkit-transition-delay:0.2s;
+  transition-delay:0.2s;
+}
+
+.tweetAnimation-enter.tweetAnimation-enter-active {
+  opacity: 1;
+  transition: opacity .5ms ease-in;
 }
