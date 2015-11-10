@@ -3,7 +3,7 @@
   list-style: none;
 }
 .container {
-  padding-top: 2em;
+  padding-top: 5em;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,21 +13,30 @@
   -ms-flex-preferred-size: 26px;
   display: block;
   background: none;
-  width: 20em;
+  width: 10em;
   margin: 0 0 16px;
   padding: 2px;
   border-width: 0 0 1px 0;
   line-height: 26px;
   border-radius: 0;
-  font-size: 16px;
+  font-size: 20px;
   color: $brand-primary;
+  text-indent: .9em;
 }
 .inputBox:focus {
   outline: none;
-  border-bottom: 1px solid $brand-highlight;
+  border-bottom: 1px solid #337AB7;
   -webkit-transform: scaleX(1);
   -ms-transform: scaleX(1);
   transform: scaleX(1);
+}
+.at {
+  font-size: 20px;
+  padding: 2px;
+  line-height: 26px;
+  position: absolute;
+  margin: 0 0 16px;
+  color: #A9A9A9;
 }
 .doesNotExist {
   padding-top: 2em;

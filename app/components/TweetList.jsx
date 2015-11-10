@@ -12,12 +12,16 @@ export default class TweetList extends Component {
             </div>
           )
         } else {
+          const tweet = this.props.listOfTweets.map((tweet, index) => {
+            return (
+              <Tweet {...tweet} key={index} />
+            );
+          })
+
           return (
             <ul className='listStyle'>
               <PageHeader>{'@' + this.props.listOfTweets[0].user.screen_name + '\'s latest tweets'}</PageHeader>
-              {this.props.listOfTweets.map((tweet, index) =>
-                <Tweet {...tweet} key={index} />
-              )}
+              { tweet }
             </ul>
           );
         }
@@ -27,4 +31,4 @@ export default class TweetList extends Component {
         );
       }
     }
-}
+};

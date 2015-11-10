@@ -1,14 +1,14 @@
 //action types
 export const RECEIVE_TWEETS = 'RECEIVE_TWEETS';
 
-export function receiveTweets(tweets) {
+export const receiveTweets = tweets => {
   return {
     type: RECEIVE_TWEETS,
     listOfTweets: tweets,
   };
 }
 
-export function fetchTweets(user) {
+export const fetchTweets = user => {
   return function(dispatch) {
     fetch('/tweets', {
       method: 'post',

@@ -29,14 +29,18 @@ export default class Container extends Component {
     const { listOfTweets } = this.props;
       return (
         <div className='container'>
+          <span>
+            <div className='at'>@</div>
             <input
               className='inputBox'
               ref='twitterHandle'
-              placeholder='enter a twitter handle'
+              placeholder='twitter handle'
+              maxLength='15'
               onKeyDown={e => {
                 if(e.keyCode === 13) this.handleClick(e);
               }}
             />
+          </span>
           <Button
             bsStyle='primary'
             onClick={(e) => this.handleClick(e)}>
