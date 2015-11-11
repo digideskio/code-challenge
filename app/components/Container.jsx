@@ -15,6 +15,11 @@ export default class Container extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(fetchTweets('coryodaniel'));
+  };
+
   handleClick(e) {
     e.preventDefault;
     const { dispatch } = this.props;

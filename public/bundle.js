@@ -25473,6 +25473,13 @@
 	  }
 
 	  _createClass(Container, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var dispatch = this.props.dispatch;
+
+	      dispatch((0, _actionsActions.fetchTweets)('coryodaniel'));
+	    }
+	  }, {
 	    key: 'handleClick',
 	    value: function handleClick(e) {
 	      e.preventDefault;
@@ -41684,6 +41691,8 @@
 
 	    _get(Object.getPrototypeOf(Tweet.prototype), 'constructor', this).call(this, props);
 	    this.parseDate = this.parseDate.bind(this);
+	    this.parsed = this.parsed.bind(this);
+	    this.encodeURL = this.encodeURL.bind(this);
 	  }
 
 	  _createClass(Tweet, [{
@@ -41692,45 +41701,68 @@
 	      var system_date = new Date(Date.parse(tdate));
 	      var user_date = new Date();
 	      var diff = Math.floor((user_date - system_date) / 1000);
-	      if (diff <= 1) {
-	        return "just now";
+	      switch (true) {
+	        case diff <= 1:
+	          return "just now";
+	        case diff < 20:
+	          return diff + " seconds ago";
+	        case diff < 40:
+	          return "half a minute ago";
+	        case diff < 60:
+	          return "less than a minute ago";
+	        case diff <= 90:
+	          return "one minute ago";
+	        case diff <= 3540:
+	          return Math.round(diff / 60) + " minutes ago";
+	        case diff <= 5400:
+	          return "1 hour ago";
+	        case diff <= 86400:
+	          return Math.round(diff / 3600) + " hours ago";
+	        case diff <= 129600:
+	          return "1 day ago";
+	        case diff < 604800:
+	          return Math.round(diff / 86400) + " days ago";
+	        case diff <= 777600:
+	          return "1 week ago";
+	        default:
+	          return "on " + system_date;
 	      }
-	      if (diff < 20) {
-	        return diff + " seconds ago";
-	      }
-	      if (diff < 40) {
-	        return "half a minute ago";
-	      }
-	      if (diff < 60) {
-	        return "less than a minute ago";
-	      }
-	      if (diff <= 90) {
-	        return "one minute ago";
-	      }
-	      if (diff <= 3540) {
-	        return Math.round(diff / 60) + " minutes ago";
-	      }
-	      if (diff <= 5400) {
-	        return "1 hour ago";
-	      }
-	      if (diff <= 86400) {
-	        return Math.round(diff / 3600) + " hours ago";
-	      }
-	      if (diff <= 129600) {
-	        return "1 day ago";
-	      }
-	      if (diff < 604800) {
-	        return Math.round(diff / 86400) + " days ago";
-	      }
-	      if (diff <= 777600) {
-	        return "1 week ago";
-	      }
-	      return "on " + system_date;
+	    }
+	  }, {
+	    key: 'parsed',
+	    value: function parsed(string) {
+	      var _this = this;
+
+	      var split = string.split(' ');
+	      var parsedString = split.map(function (word, index) {
+	        if (word[0] === '@' && word[1]) {
+	          return _this.encodeURL(word, index);
+	        } else if (index !== 0 && word[0] !== '@') {
+	          return ' ' + word + ' ';
+	        }
+
+	        return word + ' ';
+	      });
+
+	      return parsedString;
+	    }
+	  }, {
+	    key: 'encodeURL',
+	    value: function encodeURL(term, key) {
+	      var cleanTerm = term.replace(/[|&;$%:"<>()+,]/g, "");
+
+	      return _react2['default'].createElement(
+	        'a',
+	        { href: 'https://twitter.com/' + cleanTerm.substr(1), key: key },
+	        cleanTerm
+	      );
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var time = this.parseDate(this.props.created_at);
+	      var tweet = this.parsed(this.props.text);
+	      console.log(tweet);
 
 	      return _react2['default'].createElement(
 	        _reactAddonsCssTransitionGroup2['default'],
@@ -41746,7 +41778,7 @@
 	          _react2['default'].createElement(
 	            _reactBootstrap.Panel,
 	            { className: 'message', bsStyle: 'primary', header: time },
-	            this.props.text
+	            tweet
 	          )
 	        )
 	      );
