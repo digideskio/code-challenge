@@ -41748,11 +41748,12 @@
 	      array.forEach(function (word) {
 	        if (Array.isArray(word)) {
 	          word.forEach(function (nested) {
+	            console.log(nested);
 	            result.push(nested);
 	          });
+	        } else {
+	          result.push(word);
 	        }
-
-	        result.push(word);
 	      });
 
 	      return result;
@@ -41779,7 +41780,12 @@
 	        }
 
 	        if (word[0] === '#' && word[1]) {
-	          return _this.encodeHashTag(word);
+	          var newWord = word.match(/#(\w+)|([$&+,:;=?@|'<>.^*()%!-])/g);
+	          if (newWord.length > 1) {
+	            return [_this.encodeHashTag(newWord[0])].concat(_toConsumableArray(newWord.slice(1)));
+	          } else {
+	            return _this.encodeHashTag(newWord[0]);
+	          }
 	        }
 
 	        return ' ' + word + ' ';

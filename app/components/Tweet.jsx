@@ -57,11 +57,12 @@ export default class Tweet extends Component {
     array.forEach(word => {
       if(Array.isArray(word)) {
         word.forEach(nested => {
+          console.log(nested)
           result.push(nested);
         })
+      } else {
+        result.push(word);
       }
-
-      result.push(word);
     })
 
     return result;
@@ -85,7 +86,12 @@ export default class Tweet extends Component {
         }
 
         if(word[0] === '#' && word[1]) {
-          return this.encodeHashTag(word);
+          let newWord = word.match(/#(\w+)|([$&+,:;=?@|'<>.^*()%!-])/g);
+          if(newWord.length > 1) {
+            return [this.encodeHashTag(newWord[0]), ...newWord.slice(1)];
+          } else {
+            return this.encodeHashTag(newWord[0]);
+          }
         }
 
         return ' ' + word + ' ';
