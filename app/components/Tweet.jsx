@@ -10,6 +10,7 @@ export default class Tweet extends Component {
     this.flatten = this.flatten.bind(this);
     this.encodeURL = this.encodeURL.bind(this);
     this.encodeTwitterURL = this.encodeTwitterURL.bind(this);
+    this.encodeHashTag = this.encodeHashTag.bind(this);
   }
 
   parseDate(tdate) {
@@ -83,6 +84,10 @@ export default class Tweet extends Component {
             return this.encodeURL(newWord[0]);
         }
 
+        if(word[0] === '#' && word[1]) {
+          return this.encodeHashTag(word);
+        }
+
         return ' ' + word + ' ';
     });
 
@@ -92,6 +97,10 @@ export default class Tweet extends Component {
 
   encodeTwitterURL(term) {
     return React.createElement('a', {href: 'https://twitter.com/' + term}, ' ' + term + ' ');
+  }
+
+  encodeHashTag(term) {
+    return React.createElement('a', {href: 'https://twitter.com/hashtag/' + term.substr(1) + '?lang=en'}, ' ' + term + ' ');
   }
 
   encodeURL(term) {

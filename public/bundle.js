@@ -41697,6 +41697,7 @@
 	    this.flatten = this.flatten.bind(this);
 	    this.encodeURL = this.encodeURL.bind(this);
 	    this.encodeTwitterURL = this.encodeTwitterURL.bind(this);
+	    this.encodeHashTag = this.encodeHashTag.bind(this);
 	  }
 
 	  _createClass(Tweet, [{
@@ -41732,6 +41733,13 @@
 	          return "on " + system_date;
 	      }
 	    }
+
+	    // Temporary methods for parsing and flattening
+	    // TODO: split all characters to preserve all characters and parse it instead
+	    // of splitting on whitespace
+	    // TODO: get hashtags to work
+	    // TODO: other types of URLs (http, www, etc)
+
 	  }, {
 	    key: 'flatten',
 	    value: function flatten(array) {
@@ -41770,6 +41778,10 @@
 	          return _this.encodeURL(newWord[0]);
 	        }
 
+	        if (word[0] === '#' && word[1]) {
+	          return _this.encodeHashTag(word);
+	        }
+
 	        return ' ' + word + ' ';
 	      });
 
@@ -41780,6 +41792,11 @@
 	    key: 'encodeTwitterURL',
 	    value: function encodeTwitterURL(term) {
 	      return _react2['default'].createElement('a', { href: 'https://twitter.com/' + term }, ' ' + term + ' ');
+	    }
+	  }, {
+	    key: 'encodeHashTag',
+	    value: function encodeHashTag(term) {
+	      return _react2['default'].createElement('a', { href: 'https://twitter.com/hashtag/' + term.substr(1) + '?lang=en' }, ' ' + term + ' ');
 	    }
 	  }, {
 	    key: 'encodeURL',
