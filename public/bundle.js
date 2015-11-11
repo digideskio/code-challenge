@@ -41748,7 +41748,6 @@
 	      array.forEach(function (word) {
 	        if (Array.isArray(word)) {
 	          word.forEach(function (nested) {
-	            console.log(nested);
 	            result.push(nested);
 	          });
 	        } else {
@@ -41768,46 +41767,45 @@
 	        if (word[0] === '@' && word[1]) {
 	          var newWord = word.match(/@(\w+)|([$&+,:;=?@#|'<>.^*()%!-])/g);
 	          if (newWord.length > 1) {
-	            return [_this.encodeTwitterURL(newWord[0])].concat(_toConsumableArray(newWord.slice(1)));
+	            return [_this.encodeTwitterURL(newWord[0], index)].concat(_toConsumableArray(newWord.slice(1)));
 	          } else {
-	            return _this.encodeTwitterURL(newWord[0]);
+	            return _this.encodeTwitterURL(newWord[0], index);
 	          }
 	        }
 
 	        if (word.substr(0, 8) === 'https://') {
 	          var newWord = word.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/);
-	          return _this.encodeURL(newWord[0]);
+	          return _this.encodeURL(newWord[0], index);
 	        }
 
 	        if (word[0] === '#' && word[1]) {
 	          var newWord = word.match(/#(\w+)|([$&+,:;=?@|'<>.^*()%!-])/g);
 	          if (newWord.length > 1) {
-	            return [_this.encodeHashTag(newWord[0])].concat(_toConsumableArray(newWord.slice(1)));
+	            return [_this.encodeHashTag(newWord[0], index)].concat(_toConsumableArray(newWord.slice(1)));
 	          } else {
-	            return _this.encodeHashTag(newWord[0]);
+	            return _this.encodeHashTag(newWord[0], index);
 	          }
 	        }
 
 	        return ' ' + word + ' ';
 	      });
 
-	      var hello = this.flatten(parsedStrings);
-	      return hello;
+	      return this.flatten(parsedStrings);
 	    }
 	  }, {
 	    key: 'encodeTwitterURL',
-	    value: function encodeTwitterURL(term) {
-	      return _react2['default'].createElement('a', { href: 'https://twitter.com/' + term }, ' ' + term + ' ');
+	    value: function encodeTwitterURL(term, key) {
+	      return _react2['default'].createElement('a', { href: 'https://twitter.com/' + term, key: key }, ' ' + term + ' ');
 	    }
 	  }, {
 	    key: 'encodeHashTag',
-	    value: function encodeHashTag(term) {
-	      return _react2['default'].createElement('a', { href: 'https://twitter.com/hashtag/' + term.substr(1) + '?lang=en' }, ' ' + term + ' ');
+	    value: function encodeHashTag(term, key) {
+	      return _react2['default'].createElement('a', { href: 'https://twitter.com/hashtag/' + term.substr(1) + '?lang=en', key: key }, ' ' + term + ' ');
 	    }
 	  }, {
 	    key: 'encodeURL',
-	    value: function encodeURL(term) {
-	      return _react2['default'].createElement('a', { href: term }, ' ' + term + ' ');
+	    value: function encodeURL(term, key) {
+	      return _react2['default'].createElement('a', { href: term, key: key }, ' ' + term + ' ');
 	    }
 	  }, {
 	    key: 'render',

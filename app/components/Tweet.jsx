@@ -57,7 +57,6 @@ export default class Tweet extends Component {
     array.forEach(word => {
       if(Array.isArray(word)) {
         word.forEach(nested => {
-          console.log(nested)
           result.push(nested);
         })
       } else {
@@ -74,43 +73,42 @@ export default class Tweet extends Component {
         if(word[0] === '@' && word[1]) {
           let newWord = word.match(/@(\w+)|([$&+,:;=?@#|'<>.^*()%!-])/g);
           if(newWord.length > 1) {
-            return [this.encodeTwitterURL(newWord[0]), ...newWord.slice(1)];
+            return [this.encodeTwitterURL(newWord[0], index), ...newWord.slice(1)];
           } else {
-            return this.encodeTwitterURL(newWord[0]);
+            return this.encodeTwitterURL(newWord[0], index);
           }
         }
 
         if(word.substr(0, 8) === 'https://') {
           let newWord = word.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/);
-            return this.encodeURL(newWord[0]);
+            return this.encodeURL(newWord[0], index);
         }
 
         if(word[0] === '#' && word[1]) {
           let newWord = word.match(/#(\w+)|([$&+,:;=?@|'<>.^*()%!-])/g);
           if(newWord.length > 1) {
-            return [this.encodeHashTag(newWord[0]), ...newWord.slice(1)];
+            return [this.encodeHashTag(newWord[0], index), ...newWord.slice(1)];
           } else {
-            return this.encodeHashTag(newWord[0]);
+            return this.encodeHashTag(newWord[0], index);
           }
         }
 
         return ' ' + word + ' ';
     });
 
-    const hello = this.flatten(parsedStrings);
-    return hello;
+    return this.flatten(parsedStrings);
   }
 
-  encodeTwitterURL(term) {
-    return React.createElement('a', {href: 'https://twitter.com/' + term}, ' ' + term + ' ');
+  encodeTwitterURL(term, key) {
+    return React.createElement('a', {href: 'https://twitter.com/' + term, key: key}, ' ' + term + ' ');
   }
 
-  encodeHashTag(term) {
-    return React.createElement('a', {href: 'https://twitter.com/hashtag/' + term.substr(1) + '?lang=en'}, ' ' + term + ' ');
+  encodeHashTag(term, key) {
+    return React.createElement('a', {href: 'https://twitter.com/hashtag/' + term.substr(1) + '?lang=en', key: key}, ' ' + term + ' ');
   }
 
-  encodeURL(term) {
-    return React.createElement('a', {href: term}, ' ' + term + ' ');
+  encodeURL(term, key) {
+    return React.createElement('a', {href: term, key: key}, ' ' + term + ' ');
   }
 
   render() {
