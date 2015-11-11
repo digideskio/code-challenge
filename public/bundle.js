@@ -41669,6 +41669,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
@@ -41692,7 +41694,9 @@
 	    _get(Object.getPrototypeOf(Tweet.prototype), 'constructor', this).call(this, props);
 	    this.parseDate = this.parseDate.bind(this);
 	    this.parsed = this.parsed.bind(this);
+	    this.flatten = this.flatten.bind(this);
 	    this.encodeURL = this.encodeURL.bind(this);
+	    this.encodeTwitterURL = this.encodeTwitterURL.bind(this);
 	  }
 
 	  _createClass(Tweet, [{
@@ -41729,40 +41733,64 @@
 	      }
 	    }
 	  }, {
+	    key: 'flatten',
+	    value: function flatten(array) {
+	      var result = [];
+
+	      array.forEach(function (word) {
+	        if (Array.isArray(word)) {
+	          word.forEach(function (nested) {
+	            result.push(nested);
+	          });
+	        }
+
+	        result.push(word);
+	      });
+
+	      return result;
+	    }
+	  }, {
 	    key: 'parsed',
 	    value: function parsed(string) {
 	      var _this = this;
 
-	      var split = string.split(' ');
-	      var parsedString = split.map(function (word, index) {
+	      var split = string.split(/\s/);
+	      var parsedStrings = split.map(function (word, index) {
 	        if (word[0] === '@' && word[1]) {
-	          return _this.encodeURL(word, index);
-	        } else if (index !== 0 && word[0] !== '@') {
-	          return ' ' + word + ' ';
+	          var newWord = word.match(/@(\w+)|([$&+,:;=?@#|'<>.^*()%!-])/g);
+	          if (newWord.length > 1) {
+	            return [_this.encodeTwitterURL(newWord[0])].concat(_toConsumableArray(newWord.slice(1)));
+	          } else {
+	            return _this.encodeTwitterURL(newWord[0]);
+	          }
 	        }
 
-	        return word + ' ';
+	        if (word.substr(0, 8) === 'https://') {
+	          var newWord = word.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/);
+	          return _this.encodeURL(newWord[0]);
+	        }
+
+	        return ' ' + word + ' ';
 	      });
 
-	      return parsedString;
+	      var hello = this.flatten(parsedStrings);
+	      return hello;
+	    }
+	  }, {
+	    key: 'encodeTwitterURL',
+	    value: function encodeTwitterURL(term) {
+	      return _react2['default'].createElement('a', { href: 'https://twitter.com/' + term }, ' ' + term + ' ');
 	    }
 	  }, {
 	    key: 'encodeURL',
-	    value: function encodeURL(term, key) {
-	      var cleanTerm = term.replace(/[|&;$%:"<>()+,]/g, "");
-
-	      return _react2['default'].createElement(
-	        'a',
-	        { href: 'https://twitter.com/' + cleanTerm.substr(1), key: key },
-	        cleanTerm
-	      );
+	    value: function encodeURL(term) {
+	      return _react2['default'].createElement('a', { href: term }, ' ' + term + ' ');
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var time = this.parseDate(this.props.created_at);
 	      var tweet = this.parsed(this.props.text);
-	      console.log(tweet);
 
 	      return _react2['default'].createElement(
 	        _reactAddonsCssTransitionGroup2['default'],

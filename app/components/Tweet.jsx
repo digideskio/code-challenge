@@ -7,7 +7,9 @@ export default class Tweet extends Component {
     super(props);
     this.parseDate = this.parseDate.bind(this);
     this.parsed = this.parsed.bind(this);
+    this.flatten = this.flatten.bind(this);
     this.encodeURL = this.encodeURL.bind(this);
+    this.encodeTwitterURL = this.encodeTwitterURL.bind(this);
   }
 
   parseDate(tdate) {
@@ -42,33 +44,63 @@ export default class Tweet extends Component {
     }
   }
 
-  parsed(string) {
-    var split = string.split(' ');
-    var parsedString = split.map((word, index) => {
-        if(word[0] === '@' && word[1]) {
-          return this.encodeURL(word, index);
-        } else if (index !== 0 && word[0] !== '@') {
-          return ' ' + word + ' ';
-        }
+// Temporary methods for parsing and flattening
+// TODO: split all characters to preserve all characters and parse it instead
+// of splitting on whitespace
+// TODO: get hashtags to work
+// TODO: other types of URLs (http, www, etc)
 
-        return word + ' ';
-    });
+  flatten(array) {
+    var result = [];
 
-    return parsedString;
+    array.forEach(word => {
+      if(Array.isArray(word)) {
+        word.forEach(nested => {
+          result.push(nested);
+        })
+      }
+
+      result.push(word);
+    })
+
+    return result;
   }
 
-  encodeURL(term, key) {
-    const cleanTerm = term.replace(/[|&;$%:"<>()+,]/g, "");
+  parsed(string) {
+    const split = string.split(/\s/);
+    const parsedStrings = split.map((word, index) => {
+        if(word[0] === '@' && word[1]) {
+          let newWord = word.match(/@(\w+)|([$&+,:;=?@#|'<>.^*()%!-])/g);
+          if(newWord.length > 1) {
+            return [this.encodeTwitterURL(newWord[0]), ...newWord.slice(1)];
+          } else {
+            return this.encodeTwitterURL(newWord[0]);
+          }
+        }
 
-    return (
-      <a href={ 'https://twitter.com/' + cleanTerm.substr(1) } key={ key }>{ cleanTerm }</a>
-    );
+        if(word.substr(0, 8) === 'https://') {
+          let newWord = word.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/);
+            return this.encodeURL(newWord[0]);
+        }
+
+        return ' ' + word + ' ';
+    });
+
+    const hello = this.flatten(parsedStrings);
+    return hello;
+  }
+
+  encodeTwitterURL(term) {
+    return React.createElement('a', {href: 'https://twitter.com/' + term}, ' ' + term + ' ');
+  }
+
+  encodeURL(term) {
+    return React.createElement('a', {href: term}, ' ' + term + ' ');
   }
 
   render() {
     const time = this.parseDate(this.props.created_at);
     const tweet = this.parsed(this.props.text);
-    console.log(tweet)
 
     return (
       <Animate
